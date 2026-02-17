@@ -1,4 +1,4 @@
-const API_URL = '/api/students';
+const API_URL = ('/api/students');
 
 let students = [];
 
