@@ -1,29 +1,22 @@
-// script.js - The Waiter (Talks to the Backend)
+const API_URL = '/api/students';
 
-// The address of your server
-const API_URL = 'http://localhost:3000/students';
-
-// This array will hold the data we get from the database
 let students = [];
 
-// --- 1. FETCH DATA (READ) ---
-// This function asks the server for the list of students
 async function fetchStudents() {
     try {
         const response = await fetch(API_URL);
-        students = await response.json(); // Convert text to a JavaScript Array
-        renderTable();                    // Update the screen
-        updateStats();                    // Update the numbers
+        students = await response.json(); 
+        renderTable();                    
+        updateStats();                    
     } catch (error) {
         console.error('Error fetching students:', error);
         alert('Could not connect to the server. Is it running?');
     }
 }
 
-// --- 2. RENDER TABLE (DISPLAY) ---
 function renderTable(data = students) {
     const tbody = document.getElementById('student-table-body');
-    tbody.innerHTML = ''; // Clear the table first
+    tbody.innerHTML = ''; 
 
     data.forEach((student) => {
         const row = `
@@ -41,11 +34,9 @@ function renderTable(data = students) {
     });
 }
 
-// --- 3. ADD STUDENT (CREATE) ---
 document.getElementById('addStudentForm').addEventListener('submit', async function(e) {
-    e.preventDefault(); // Stop the page from reloading
+    e.preventDefault(); 
 
-    // Bundle the form data into an object
     const newStudent = {
         id: document.getElementById('newIdx').value,
         name: document.getElementById('newName').value,
@@ -54,7 +45,6 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
     };
 
     try {
-        // Send the object to the server
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -62,10 +52,8 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
         });
 
         if (response.ok) {
-            // If successful, refresh the list
             fetchStudents();
             closeModal();
-            // Clear the form inputs
             e.target.reset();
             alert('Student Added Successfully!');
         } else {
@@ -77,16 +65,13 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
     }
 });
 
-// --- 4. DELETE STUDENT (DELETE) ---
 async function deleteStudent(studentId) {
     if(confirm('Are you sure you want to remove this student?')) {
         try {
-            // Tell the server to delete the student with this ID
             await fetch(`${API_URL}/${studentId}`, {
                 method: 'DELETE'
             });
             
-            // Refresh the list automatically
             fetchStudents();
             
         } catch (error) {
@@ -95,10 +80,8 @@ async function deleteStudent(studentId) {
     }
 }
 
-// --- 5. SEARCH LOGIC (LOCAL FILTER) ---
 function filterStudents() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    // We filter the local 'students' array because we already fetched the data
     const filtered = students.filter(s => 
         s.name.toLowerCase().includes(searchTerm) || 
         s.id.includes(searchTerm)
@@ -106,19 +89,11 @@ function filterStudents() {
     renderTable(filtered);
 }
 
-// --- 6. NAVIGATION & UI ---
 function showSection(sectionId) {
-    // Hide all sections
     document.querySelectorAll('.content-section').forEach(sec => sec.style.display = 'none');
-    // Show the clicked section
     document.getElementById(sectionId + '-section').style.display = 'block';
+    document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));    
 
-    // Update Sidebar Active Class
-    document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-    // Note: We need to pass 'this' from HTML or handle event differently. 
-    // To keep it simple, we just rely on visual toggle for now or you can add 'event' logic back.
-    
-    // Update Header
     const titles = { 'home': 'Student Records',
                      'profile': 'Admin Profile',
                     'courses': 'Course Management' };
@@ -161,7 +136,7 @@ function updateStats() {
     }
 
 
-// --- MODAL FUNCTIONS ---
+// MODAL FUNCTIONS 
 function openModal() { document.getElementById('studentModal').style.display = 'flex'; }
 function closeModal() { document.getElementById('studentModal').style.display = 'none'; }
 window.onclick = function(event) {
@@ -169,6 +144,6 @@ window.onclick = function(event) {
     if (event.target == modal) modal.style.display = "none";
 }
 
-// --- INITIALIZATION ---
+// INITIALIZATION 
 // When the page loads, fetch the data immediately
 fetchStudents();
