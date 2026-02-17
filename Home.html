@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Record System</title>
+    <link rel="stylesheet" href="studentRecord.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="easyrecord">
+                <h2>Easy<span>Record</span></h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active" onclick="showSection('home')">Students</li>
+                <li onclick="showSection('courses')">Courses</li>
+                <li onclick="showSection('profile')">Admin Profile</li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header>
+                <h2 id="page-title">Student Records</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search for a student..." onkeyup="filterStudents()">
+                </div>
+            </header>
+
+            <section id="home-section" class="content-section">
+                <div class="stats-row">
+                    <div class="card stat-card">
+                        <h3>Total Students</h3>
+                        <p class="stat-number" id="total-students-count">0</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>Average GPA</h3>
+                        <p class="stat-number" id="average-gpa">0.0</p>
+                    </div>
+                </div>
+
+                <div class="card table-card">
+                    <div class="card-header">
+                        <h3>All Students</h3>
+                        <button class="btn btn-primary" onclick="openModal()">+ Add Student</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Course</th>
+                                    <th>GPA</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="profile-section" class="content-section" style="display: none;">
+                <div class="card profile-card">
+                    <div class="profile-header">
+                        <h2>Admin User</h2>
+                        <p>Senior Lecturer</p>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-box" style="background-color: var(--primary-color); color: white;">
+                            <h2 id="profile-total-students">0</h2>
+                            <p>Registered Students</p>
+                        </div>
+                        <div class="stat-box" style="background-color: var(--accent-color); color: white;">
+                            <h2 id="profile-active-courses">0</h2>
+                            <p>Active Courses</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="courses-section" class="content-section" style="display: none;">
+                <div class="card table-card">
+                    <div class="card-header">
+                        <h3>Available Courses</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Course Code</th>
+                                    <th>Department Name</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>CS101</strong></td>
+                                    <td>Computer Science</td>
+                                    <td>4 Years</td>
+                                    <td><span style="color: green; font-weight: bold;">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ENG201</strong></td>
+                                    <td>Engineering</td>
+                                    <td>4 Years</td>
+                                    <td><span style="color: green; font-weight: bold;">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>BUS301</strong></td>
+                                    <td>Business Admin</td>
+                                    <td>3 Years</td>
+                                    <td><span style="color: green; font-weight: bold;">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ART101</strong></td>
+                                    <td>Fine Arts</td>
+                                    <td>3 Years</td>
+                                    <td><span style="color: orange; font-weight: bold;">Review</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add New Student</h2>
+            <form id="addStudentForm">
+                <input type="text" id="newIdx" placeholder="Student ID (e.g. 2024001)" required>
+                <input type="text" id="newName" placeholder="Full Name" required>
+                <input type="text" id="newCourse" placeholder="Course" required>
+                <input type="number" id="newGpa" placeholder="GPA" step="0.1" max="4.0" required>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Save Student</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="studentRecord.js"></script>
+</body>
+</html>
